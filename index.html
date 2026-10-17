@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="navy">
+<head>
+  <meta charset="UTF-8">
+  <!-- 响应式核心：适配手机设备 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="#0a192f">
+  <meta name="description" content="CallIJL 的个人作品集：诗词、小说、音乐、项目与相册。">
+  <title>CallIJL · 个人作品集</title>
+  <script>
+    // 提前标记 JS 可用：避免「进入弹窗」在禁用 JS 时挡住页面
+    document.documentElement.classList.add('js');
+    // 提前套用上次选择的主题，避免刷新时闪白
+    try {
+      var saved = localStorage.getItem('shudi-theme');
+      if (saved === 'paper' || saved === 'navy') {
+        document.documentElement.setAttribute('data-theme', saved);
+      }
+    } catch (e) {}
+  </script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- 页面渐变光斑（纯装饰，不参与交互） -->
+  <div class="ambient" aria-hidden="true"><span class="orb orb-a"></span><span class="orb orb-b"></span></div>
+
+  <!-- ============ 1. Bing 搜索栏（页面最顶端，导航栏上方） ============ -->
+  <div class="search-bar">
+    <div class="wrap">
+      <form class="search-form" action="https://www.bing.com/search" method="get" role="search">
+        <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"></circle><line x1="16.5" y1="16.5" x2="21" y2="21"></line>
+        </svg>
+        <input class="search-input" type="search" name="q" placeholder="试着输入奶龙中学..." aria-label="在必应搜索">
+        <button class="search-btn" type="submit">搜索</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ 公告条：横向滚动（位于搜索栏下方） ============ -->
+  <div class="ticker" aria-label="站点公告">
+    <div class="ticker-track">
+      <span class="ticker-item">庆祝四川省绵阳中学拿下“奶龙中学.com”域名！</span>
+      <span class="ticker-item" aria-hidden="true">庆祝四川省绵阳中学拿下“奶龙中学.com”域名！</span>
+      <span class="ticker-item" aria-hidden="true">庆祝四川省绵阳中学拿下“奶龙中学.com”域名！</span>
+      <span class="ticker-item" aria-hidden="true">庆祝四川省绵阳中学拿下“奶龙中学.com”域名！</span>
+      <span class="ticker-item" aria-hidden="true">庆祝四川省绵阳中学拿下“奶龙中学.com”域名！</span>
+      <span class="ticker-item" aria-hidden="true">庆祝四川省绵阳中学拿下“奶龙中学.com”域名！</span>
+    </div>
+  </div>
+
+  <!-- ============ 2. 页面头部 / 导航栏 ============ -->
+  <header class="site-nav" id="siteNav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="#top">
+        <span class="brand-mark">C</span>
+        <span class="brand-text">CallIJL</span>
+      </a>
+
+      <nav class="nav-links" aria-label="页面导航">
+        <a href="#about" data-nav="about"><span class="num">01.</span>简介</a>
+        <a href="#music" data-nav="music"><span class="num">02.</span>音乐</a>
+        <a href="#projects" data-nav="projects"><span class="num">03.</span>项目</a>
+        <a href="#writing" data-nav="writing"><span class="num">04.</span>文集</a>
+        <a href="#gallery" data-nav="gallery"><span class="num">05.</span>相册</a>
+        <a href="#tools" data-nav="tools"><span class="num">06.</span>工具</a>
+      </nav>
+
+      <div class="nav-actions">
+        <!-- 主题切换：深蓝 / 米白 -->
+        <button class="icon-btn theme-btn" id="themeBtn" type="button"
+                aria-label="切换主题" title="切换主题">
+          <svg class="ico-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg>
+          <svg class="ico-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"></circle><path d="M12 2v2.4M12 19.6V22M2 12h2.4M19.6 12H22M4.9 4.9l1.7 1.7M17.4 17.4l1.7 1.7M19.1 4.9l-1.7 1.7M6.6 17.4l-1.7 1.7"></path></svg>
+        </button>
+
+        <!-- 手机端菜单按钮 -->
+        <button class="icon-btn menu-btn" id="menuBtn" type="button"
+                aria-label="打开菜单" aria-expanded="false" aria-controls="mobileMenu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 手机端抽屉菜单 -->
+  <div class="mobile-menu" id="mobileMenu" hidden>
+    <nav aria-label="移动端导航">
+      <a href="#about"><span class="num">01.</span>简介</a>
+      <a href="#music"><span class="num">02.</span>音乐</a>
+      <a href="#projects"><span class="num">03.</span>项目</a>
+      <a href="#writing"><span class="num">04.</span>文集</a>
+      <a href="#gallery"><span class="num">05.</span>相册</a>
+      <a href="#tools"><span class="num">06.</span>工具</a>
+    </nav>
+  </div>
+
+  <!-- 左侧社交竖栏（大屏可见） -->
+  <aside class="rail rail-left" aria-label="社交链接">
+    <a href="https://github.com/" target="_blank" rel="noopener noreferrer" title="GitHub">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2z"></path></svg>
+    </a>
+    <a href="https://y.music.163.com/m/user?id=1943148422&amp;dlt=0846&amp;app_version=9.3.30" target="_blank" rel="noopener noreferrer" title="网易云音乐">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"></circle><path d="M9 15.2c2.4.9 5 .2 5.7-1.5.6-1.5-.5-2.6-2-2.4-1 .2-1.4 1-1.2 1.6"></path></svg>
+    </a>
+    <span class="rail-line" aria-hidden="true"></span>
+  </aside>
+
+  <!-- 右侧竖栏（大屏可见） -->
+  <aside class="rail rail-right" aria-label="辅助链接">
+    <a href="mailto:2978682433@qq.com" title="邮箱">2978682433@qq.com</a>
+    <span class="rail-line" aria-hidden="true"></span>
+    <a href="#top" class="rail-top">回到顶部</a>
+  </aside>
+
+  <main>
+
+    <!-- ============ 3. 个人简介 ============ -->
+    <section class="hero wrap" id="about">
+      <p class="hero-eyebrow reveal">你好，我是</p>
+      <h1 class="hero-name reveal">CallIJL</h1>
+      <p class="hero-tagline reveal">写诗词的人，也写短篇小说。</p>
+
+      <div class="hero-body reveal">
+        <p>
+          籍贯四川绵阳，毕业于<a href="https://www.scmyzx.com.cn/" target="_blank" rel="noopener noreferrer">绵阳中学</a>。
+          爱好：阅读、诗词与短篇小说创作；喜欢研究中国哲学文化；爱看番，心中 TOP：《死亡笔记》、JOJO 系列；
+          爱玩单机游戏，尤其喜爱锈湖全系列，可点击
+          <a href="https://www.rustylake.com/" target="_blank" rel="noopener noreferrer">Rusty Lake（锈湖）官网</a>
+          前往；计算机小白，正在努力学习ing……
+        </p>
+        <ul class="tag-list">
+          <li>阅读</li><li>诗词</li><li>短篇小说</li><li>中国哲学</li><li>番剧</li><li>单机游戏</li><li>锈湖</li><li>计算机小白</li>
+        </ul>
+        <div class="hero-cta">
+          <a class="btn" href="#writing">看看我的文集</a>
+          <a class="btn btn-ghost" href="#music">最近在听</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 4. 喜欢的音乐 ============ -->
+    <section class="sec wrap" id="music">
+      <h2 class="sec-head reveal">
+        <span class="sec-num">02.</span>
+        <span class="sec-title">喜欢的音乐</span>
+        <span class="sec-line" aria-hidden="true"></span>
+      </h2>
+      <p class="sec-sub reveal">
+        控制台外的节拍。
+        <a href="https://y.music.163.com/m/user?id=1943148422&amp;dlt=0846&amp;app_version=9.3.30"
+           target="_blank" rel="noopener noreferrer">我的网易云音乐主页</a>
+      </p>
+
+      <div class="artist-group reveal">
+        <h3 class="group-title">Hip-hop</h3>
+        <div class="artist-grid">
+          <article class="artist-card">
+            <div class="artist-thumb"><img src="images/kendrick.jpg" alt="Kendrick Lamar 头像" loading="lazy"></div>
+            <h4 class="artist-name">Kendrick Lamar</h4>
+            <p class="artist-alias">肯追啦吗</p>
+          </article>
+          <article class="artist-card">
+            <div class="artist-thumb"><img src="images/tupac.jpg" alt="2Pac 头像" loading="lazy"></div>
+            <h4 class="artist-name">2Pac</h4>
+            <p class="artist-alias">图派克</p>
+          </article>
+          <article class="artist-card">
+            <div class="artist-thumb"><img src="images/frank.jpg" alt="Frank Ocean 头像" loading="lazy"></div>
+            <h4 class="artist-name">Frank Ocean</h4>
+            <p class="artist-alias">法海</p>
+          </article>
+          <article class="artist-card">
+            <div class="artist-thumb"><img src="images/tyler.jpg" alt="Tyler, The Creator 头像" loading="lazy"></div>
+            <h4 class="artist-name">Tyler, The Creator</h4>
+            <p class="artist-alias">泰勒</p>
+          </article>
+          <article class="artist-card">
+            <div class="artist-thumb"><img src="images/danbao.jpg" alt="蛋堡 头像" loading="lazy"></div>
+            <h4 class="artist-name">蛋堡</h4>
+            <p class="artist-alias">Soft Lipa</p>
+          </article>
+        </div>
+      </div>
+
+      <div class="artist-group reveal">
+        <h3 class="group-title">R&amp;B</h3>
+        <div class="artist-grid">
+          <article class="artist-card">
+            <div class="artist-thumb"><img src="images/mariah.jpg" alt="Mariah Carey 头像" loading="lazy"></div>
+            <h4 class="artist-name">Mariah Carey</h4>
+            <p class="artist-alias">玛利亚凯莉</p>
+          </article>
+          <article class="artist-card">
+            <div class="artist-thumb"><img src="images/toni.jpg" alt="Toni Braxton 头像" loading="lazy"></div>
+            <h4 class="artist-name">Toni Braxton</h4>
+            <p class="artist-alias">唐妮·布蕾斯顿</p>
+          </article>
+          <article class="artist-card">
+            <div class="artist-thumb"><img src="images/babyface.jpg" alt="Babyface 头像" loading="lazy"></div>
+            <h4 class="artist-name">Babyface</h4>
+            <p class="artist-alias">娃娃脸</p>
+          </article>
+          <article class="artist-card">
+            <div class="artist-thumb"><img src="images/neyo.jpg" alt="Ne-Yo 头像" loading="lazy"></div>
+            <h4 class="artist-name">Ne-Yo</h4>
+            <p class="artist-alias">尼欧</p>
+          </article>
+          <article class="artist-card">
+            <div class="artist-thumb"><img src="images/beyonce.jpg" alt="Beyoncé 头像" loading="lazy"></div>
+            <h4 class="artist-name">Beyoncé</h4>
+            <p class="artist-alias">蓓昂斯</p>
+          </article>
+          <article class="artist-card">
+            <div class="artist-thumb"><img src="images/keyshia.jpg" alt="Keyshia Cole 头像" loading="lazy"></div>
+            <h4 class="artist-name">Keyshia Cole</h4>
+            <p class="artist-alias">凯希亚·科尔</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 5. 项目展示 ============ -->
+    <section class="sec wrap" id="projects">
+      <h2 class="sec-head reveal">
+        <span class="sec-num">03.</span>
+        <span class="sec-title">项目展示</span>
+        <span class="sec-line" aria-hidden="true"></span>
+      </h2>
+
+      <article class="card project-card reveal">
+        <div class="project-head">
+          <h3 class="project-title">猜数字小游戏</h3>
+          <span class="badge">Python · 单文件</span>
+        </div>
+        <p class="project-desc">
+          电脑随机生成 1-100 之间的数字，用户输入猜测数字，程序提示“大了”或者“小了”，
+          直到猜中，最后统计一共猜测多少次。单文件 Python 代码，可以使用命令行运行。
+        </p>
+        <ul class="meta-list">
+          <li>运行 · <code>python guess_number.py</code></li>
+          <li>依赖 · 无（Python 3.6+）</li>
+        </ul>
+
+        <div class="code-tabs" role="tablist" aria-label="项目预览切换">
+          <button class="tab is-active" type="button" role="tab" aria-selected="true" data-tab="code">代码</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-tab="readme">README</button>
+        </div>
+
+        <div class="tab-panel is-active" data-panel="code">
+          <pre class="code-box"><code>import random
+
+def main():
+    """猜数字小游戏：随机数在 1-100 之间，直到猜中为止。"""
+    answer = random.randint(1, 100)
+    count = 0
+    print("我已经想好了一个 1-100 之间的整数，来猜猜看吧！")
+
+    while True:
+        guess = input("请输入你的猜测（1-100）：").strip()
+
+        # 输入校验：必须是 1-100 的整数
+        if not guess.isdigit():
+            print("请输入 1-100 之间的整数。")
+            continue
+        guess = int(guess)
+        if not 1 &lt;= guess &lt;= 100:
+            print("范围是 1-100，请重新输入。")
+            continue
+
+        count += 1
+
+        if guess &gt; answer:
+            print("大了")
+        elif guess &lt; answer:
+            print("小了")
+        else:
+            print(f"猜中啦！答案就是 {answer}，你一共猜了 {count} 次。")
+            break
+
+if __name__ == "__main__":
+    main()</code></pre>
+        </div>
+
+        <div class="tab-panel" data-panel="readme">
+          <div class="readme-box">
+            <p><strong># 猜数字小游戏（Guess the Number）</strong></p>
+            <p>一个用 Python 编写的命令行小游戏：程序随机生成 1-100 之间的整数，玩家反复输入猜测值，程序返回“大了 / 小了”，直到猜中并统计猜测次数。</p>
+            <p><strong>## 功能</strong></p>
+            <p>· 随机生成 1-100 的目标数字<br>· 输入非法时给出友好提示，不消耗猜测次数<br>· 每次猜测实时反馈“大了 / 小了”<br>· 猜中后统计总次数</p>
+            <p><strong>## 运行方式</strong></p>
+            <p>需要 Python 3.6 及以上版本，无需安装第三方依赖。</p>
+            <pre class="code-box code-box--inline"><code>python guess_number.py</code></pre>
+            <p><strong>## 示例</strong></p>
+            <pre class="code-box code-box--inline"><code>我已经想好了一个 1-100 之间的整数，来猜猜看吧！
+请输入你的猜测（1-100）：50
+小了
+请输入你的猜测（1-100）：75
+大了
+请输入你的猜测（1-100）：63
+猜中啦！答案就是 63，你一共猜了 3 次。</code></pre>
+            <p><strong>## 可拓展方向</strong></p>
+            <p>· 增加难度等级（改变数字范围）<br>· 限制最大猜测次数<br>· 记录历史最佳成绩</p>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============ 6. 我的文集 ============ -->
+    <section class="sec wrap" id="writing">
+      <h2 class="sec-head reveal">
+        <span class="sec-num">04.</span>
+        <span class="sec-title">我的文集与书法练习（部分展示）</span>
+        <span class="sec-line" aria-hidden="true"></span>
+      </h2>
+      <p class="sec-sub reveal">闲时落笔，记录心绪与见闻。</p>
+
+      <!-- 6.1 诗词 -->
+      <h3 class="group-title reveal" id="poems">诗词</h3>
+      <div class="poem-grid">
+
+        <article class="card poem-card reveal">
+          <div class="poem-cover-wrap">
+            <img class="poem-cover is-active" src="images/ci_cover.jpg" alt="《沁园春·随行夜中》配图：夜路与灯" loading="lazy">
+          </div>
+          <div class="poem-body">
+            <h4 class="poem-title">沁园春·随行夜中</h4>
+            <p class="poem-date">2025.11.07</p>
+
+            <p class="poem-excerpt">
+              朔风徙蹁，败叶纷翻，冷月孤悬。<br>
+              蹑履青灯下，往事千端；情丝斩乱，尘网谁堪。<br>
+              世路无穷，劳生有限，俗务销磨江郎难……
+            </p>
+
+            <div class="poem-full" id="poem-full-1" aria-hidden="true">
+              <p>
+                朔风徙蹁，败叶纷翻，冷月孤悬。<br>
+                蹑履青灯下，往事千端；情丝斩乱，尘网谁堪。<br>
+                世路无穷，劳生有限，俗务销磨江郎难。<br>
+                只偷闲，凭丝竹抚心，衷肠诉残。<br>
+                <br>
+                当时笑颜展欢。今思远、秋水浪缱绻。<br>
+                旅枕萦长叹，少眠非愿；日出逐我，敛衽黯颜。<br>
+                举目遥瞻，此时同照，蜀地孤轮我亦单。<br>
+                归期误，却惊觉袖湿，无言匆行。
+              </p>
+            </div>
+
+            <button class="btn-more" type="button" aria-expanded="false" aria-controls="poem-full-1">点击查看更多</button>
+          </div>
+        </article>
+
+        <article class="card poem-card reveal">
+          <div class="poem-cover-wrap" data-slideshow>
+            <img class="poem-cover is-active" src="images/spring_cover.jpg" alt="《望海潮·春日》配图：亭下流泉" loading="lazy">
+            <img class="poem-cover" src="images/spring_2.jpg" alt="《望海潮·春日》配图：樱花" loading="lazy">
+            <img class="poem-cover" src="images/spring_3.jpg" alt="《望海潮·春日》配图：春日绿意" loading="lazy">
+            <img class="poem-cover" src="images/spring_4.jpg" alt="《望海潮·春日》配图：花与晴空" loading="lazy">
+            <img class="poem-cover" src="images/spring_5.jpg" alt="《望海潮·春日》配图：泻银碎玉" loading="lazy">
+            <img class="poem-cover" src="images/spring_6.jpg" alt="《望海潮·春日》配图：林间" loading="lazy">
+          </div>
+          <div class="poem-body">
+            <h4 class="poem-title">望海潮·春日</h4>
+            <p class="poem-date">2024.4.6</p>
+
+            <p class="poem-excerpt">
+              清明微雨，绿烟朦胧，翠叶婆娑如瀑。<br>
+              赭枝虬曲，玉兰蕊颤，粉樱枝头抱簇。<br>
+              百鸟细啁啾，千蝶起蹁舞，万物皆甦……
+            </p>
+
+            <div class="poem-full" id="poem-full-2" aria-hidden="true">
+              <p>
+                清明微雨，绿烟朦胧，翠叶婆娑如瀑。<br>
+                赭枝虬曲，玉兰蕊颤，粉樱枝头抱簇。<br>
+                百鸟细啁啾，千蝶起蹁舞，万物皆甦。<br>
+                久在樊笼，得将门出，心畅舒。<br>
+                <br>
+                飞檐翘角掩映，有泻银碎玉，苔石老梧。<br>
+                子云亭下，斜雨染肤，抚阑静听风疏。<br>
+                垂目凝寂池，流漪圈落珠，扰动春姝。<br>
+                朱瓣红叶自浮，何与沉鲤殊？
+              </p>
+            </div>
+
+            <button class="btn-more" type="button" aria-expanded="false" aria-controls="poem-full-2">点击查看更多</button>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- 6.2 小说 -->
+      <h3 class="group-title reveal" id="novels">小说</h3>
+      <div class="novel-grid">
+
+        <article class="card novel-card reveal">
+          <h4 class="novel-title">夜晚的镜前狂想</h4>
+          <p class="novel-date">2024.6.27</p>
+          <p class="novel-excerpt">
+            某个夜里，刚赶完作业的我准备摸黑洗衣服。走进盥洗室，一块小得可怜且稍有破损的镜子便映入眼帘……
+            随着目光上移，我注视着镜中自己的双眼。这双已经被端详过无数次的眼竟在此刻生出一种不可言说的陌生感——就好像是来自另一个人的注视。
+          </p>
+          <button class="btn-more btn-novel" type="button"
+                  data-novel-title="夜晚的镜前狂想｜2024.6.27"
+                  data-novel-target="novel-body-1">点击查看更多</button>
+
+          <template id="novel-body-1">
+            <p>某个夜里，刚赶完作业的我准备摸黑洗衣服。走进盥洗室，一块小得可怜且稍有破损的镜子便映入眼帘，它固定在水龙头正对着的墙上——这意味着当你面对水龙头时是看不到镜子中的情形如何的。</p>
+            <p>我走到镜子前，用小手电微弱冰冷的光照着自己的脸以供细细端详：嘴唇、脸颊、鼻子……随着目光上移，我注视着镜中自己的双眼。这双已经被端详过无数次的眼竟在此刻生出一种不可言说的陌生感——就好像是来自另一个人的注视。莫名的恐惧从我身后的黑暗涌出——那双眼——我的眼——还在盯着……</p>
+            <p>我立刻转身，拒绝再面对镜子。</p>
+            <p>“神戳戳的。”我暗道。继而开始今晚的正事，洗衣服。</p>
+            <p>把手电固定好。冰冷的光线凝在因年久而瓷砖略发黄的洗漱台上，我的视野小而昏暗地亮着。打开水龙头，水声哗哗。黑夜静得无声，仿佛被扼住了咽喉，发声不得。只有刺耳的水声充斥在这逼仄一间。</p>
+            <p>抹肥皂、搓洗、冲水……单调地重复着。这种肢体动作上的单调引发了人思想上的活跃。说真的，我其实很讨厌在黑暗中使用手电照明。因为中心视野越亮，四周的黑暗也就愈发深不可测了。人一向惧怕未知。</p>
+            <p>思绪如林中野兽横冲直撞，毫无平静有序可言。我不住地想着——背对着镜子时，镜子中的我会转过来看我吗？面对这种无来由的荒诞想法，我不禁轻笑出声。都什么年代了，还在玩传统套路。</p>
+            <p>我略感轻松地转过身，面对镜子，再次用手电照着自己，却发现此刻镜中的自己竟呈现出一种目眦欲裂的可怖模样。我登时胆战心惊。“怎……么可能……?”我急忙将手抚上自己的脸，试图复原这该死的表情。可镜中人依旧是一副阴郁愤懑的样子，好似想要爬出来将我生吞活剥掉。</p>
+            <p>我再也无法故作镇静了。</p>
+            <p>不过很快一条妙计出现在我脑中。</p>
+            <p>我压下心中恐惧，上前一步，紧紧注视着镜中人——就像TA对我所做的。</p>
+            <p>“你想代替我……”话还未毕，镜中人的表情似乎多了一丝狂热与狰狞。</p>
+            <p>“想代替我来上这苦逼的高三吗？”</p>
+            <p>“那就来吧。”我接着说完。</p>
+            <p>闻言，镜中我的模样顷刻间恢复了正常。且无论我再怎么死盯镜中的自己，也再无异动了……</p>
+          </template>
+        </article>
+
+        <article class="card novel-card reveal">
+          <h4 class="novel-title">蝴蝶之死</h4>
+          <p class="novel-date">2023.10.21</p>
+          <p class="novel-excerpt">
+            他再也承受不住了。<br>
+            他轻轻地放下作业，快步走出寝室，仿佛是下定了什么决心似的。此刻，他的眼前只有那极少数的，没有安装铁丝网的窗。
+            越来越近……他明白，生与死的界限即将淡出，可心里却是异常的平静。
+          </p>
+          <button class="btn-more btn-novel" type="button"
+                  data-novel-title="蝴蝶之死｜2023.10.21"
+                  data-novel-target="novel-body-2">点击查看更多</button>
+
+          <template id="novel-body-2">
+            <p>他再也承受不住了。</p>
+            <p>他轻轻地放下作业，快步走出寝室，仿佛是下定了什么决心似的。此刻，他的眼前只有那极少数的，没有安装铁丝网的窗。</p>
+            <p>越来越近……</p>
+            <p>他明白，生与死的界限即将淡出，可心里却是异常的平静——没有撕心裂肺的哭喊、没有歇斯底里的暴怒、也没有绝望至极的悲恸。</p>
+            <p>——有且仅有的，是沉默。至于那些情感，早就在发作过后，又无助地归于死寂，再也发不出一点声响。</p>
+            <p>终于，他站在了窗户边缘，如他所无数次设想过的场景一样。</p>
+            <p>此时大家都去吃午饭了，人很少。</p>
+            <p>深秋的风将他拥入怀中，温暖中却又夹杂着阵阵寒意，是冬的预兆。他怔望着那冷而硬的地面好一阵，想象着自己在地面上炸开的样子，双腿不禁微微颤抖起来，细密的冷汗自皮肤沁出，默如止水的心竟又泛起些涟漪……可他脑中又如走马灯似的疯狂涌入那些痛苦压抑到足以令人崩溃的回忆。</p>
+            <p>涟漪又归于平静了。</p>
+            <p>于是，他以一种近乎贪婪的目光深深看了这脚下的校园，神情复杂。霎时，一只黑色蝴蝶飞入他的眼帘，它在低空盘旋着，翅膀上的花纹神秘而华丽。</p>
+            <p>“真漂亮。”他叹道，“但那又有什么意义呢？”他深吸一口气，闭上双眼。</p>
+            <p>“去他妈的。”</p>
+            <p>随着一声巨大的闷响，四处林鸟惊散纷飞。而后世界又立马归于平静，好像什么都没发生过；他的所有意识于冰冷地面上蔓延至凝固的鲜血中消逝，再无反应。</p>
+            <p>此时正是午间，秋风微爽，阳光明媚。</p>
+            <p>那只黑色的神秘蝴蝶也悠悠地，不知飞往何处去了。</p>
+            <p>*</p>
+            <p>上午最后一节的下课铃一响，她就如往常一般，带上上午的作业，直奔寝室。</p>
+            <p>她不吃午饭的原因有二：一是可以节省出更多的学习时间；再者可以省下一笔午饭钱——她的家境拮据，再加之是个女孩，能继续高中学业对她来说已是莫大的恩赐了，所以她拼了命的学习，唯恐父母收回成命。</p>
+            <p>她快步走出教学楼，注意到一只通体黑色的蝴蝶在空中低低盘旋，翅膀上的花纹神秘而华丽。</p>
+            <p>“真漂亮。”她叹道，“但那又有什么意义呢？</p>
+            <p>“我还要赶快写作业呢。”她头也不回地离开了。</p>
+            <p>*</p>
+            <p>还没经过男生宿舍，远远地，她竟听见一声巨大的闷响。这太不寻常了，她脑子里顿时闪过一个不可能但又十分可能的答案，可又像是不愿承认似的，急忙摆了摆头，想把脑子里的推测甩开——但是她发现她做不到——特殊的时间、特殊的地点和特殊的声音……</p>
+            <p>怎么看都像是有人……了</p>
+            <p>随即的状况很遗憾地证实了她的想法：从宿舍楼里跑出来的宿管、赶来的校警和几个老师之类的大人立马围起来了一块地方，并且驱赶着围观的学生们。</p>
+            <p>此时大家已陆陆续续吃完了午饭，人越来越多了。</p>
+            <p>她此时却已被麻木取代了不安，反倒是一心想回去写她的作业。“跳楼嘛，再正常不过的事了。”她这样想着，一面快步挤出人群，将一堆呼天抢地的人抛在背后。</p>
+            <p>她一回到宿舍就开始写作业，舍友们也陆续回来了，显然正对那件事大谈特谈。</p>
+            <p>“高年级的还没跳，低年级的就先跳了？”</p>
+            <p>“跳一个人会放双休吗？”</p>
+            <p>“吓死人了，这也太晦气了。”</p>
+            <p>“无所谓，又不是第一次发生这种事了。”</p>
+            <p>……</p>
+            <p>她充耳不闻，尽力让自己的注意力集中在作业上。舍友们仍喋喋不休直至铃响，才意犹未尽的闭上了嘴。</p>
+            <p>下午出宿舍时，学生们的目光不由得一致地望向某个地方——尽管那地方已是干干净净，好像什么都没发生过。</p>
+            <p>她仍是目视前方，脚步和眼神没有作一丝一毫的停留。</p>
+            <p>无处可看，她竟鬼使神差地望了一眼天空。天光大好，林鸟静憩——唯独有一只熟悉的黑身蝴蝶仍在低低盘旋，似在亲吻学生们的头顶。</p>
+            <p>她脑中一直紧绷的某根弦突然没来由的断掉了。</p>
+            <p>她再也控制不住自己，居然蹲在地上嚎啕大哭起来……</p>
+          </template>
+        </article>
+
+      </div>
+      <!-- 6.3 书法练习 -->
+      <h3 class="group-title reveal" id="calligraphy">书法练习</h3>
+      <div class="callig-grid">
+        <figure class="callig-item zoomable reveal">
+          <img src="images/shufa-1.jpg" alt="临《兰亭序》局部一" loading="lazy">
+          <figcaption>临《兰亭序》· 一</figcaption>
+        </figure>
+        <figure class="callig-item zoomable reveal">
+          <img src="images/shufa-2.jpg" alt="临《兰亭序》局部二" loading="lazy">
+          <figcaption>临《兰亭序》· 二</figcaption>
+        </figure>
+        <figure class="callig-item zoomable reveal">
+          <img src="images/shufa-3.jpg" alt="行书作品：诚者天之道也" loading="lazy">
+          <figcaption>《诚者天之道也》</figcaption>
+        </figure>
+      </div>
+
+      <figure class="callig-wide zoomable reveal">
+        <img src="images/shufa-wide.jpg" alt="隶书横幅：精气神" loading="lazy">
+        <figcaption>横幅 · 《精气神》</figcaption>
+      </figure>
+    </section>
+
+    <!-- ============ 7. 相册 ============ -->
+    <section class="sec wrap" id="gallery">
+      <h2 class="sec-head reveal">
+        <span class="sec-num">05.</span>
+        <span class="sec-title">相册</span>
+        <span class="sec-line" aria-hidden="true"></span>
+      </h2>
+      <p class="sec-sub reveal">爱拍一些猫猫狗狗...（熊猫也算猫 hhh）</p>
+
+      <div class="gallery-grid">
+        <figure class="gallery-item reveal" tabindex="0" role="button" aria-label="放大查看：白猫">
+          <img src="images/cat1.jpg" alt="蹲在路边的白灰猫" loading="lazy">
+          <figcaption>白猫</figcaption>
+        </figure>
+        <figure class="gallery-item reveal" tabindex="0" role="button" aria-label="放大查看：黑猫">
+          <img src="images/cat2.jpg" alt="趴在草丛边的黑猫" loading="lazy">
+          <figcaption>黑猫</figcaption>
+        </figure>
+        <figure class="gallery-item reveal" tabindex="0" role="button" aria-label="放大查看：橘猫">
+          <img src="images/cat3.jpg" alt="站在草丛里的橘猫" loading="lazy">
+          <figcaption>橘猫</figcaption>
+        </figure>
+        <figure class="gallery-item reveal" tabindex="0" role="button" aria-label="放大查看：狸花猫">
+          <img src="images/cat4.jpg" alt="躺在草地上的狸花猫" loading="lazy">
+          <figcaption>狸花猫</figcaption>
+        </figure>
+        <figure class="gallery-item reveal" tabindex="0" role="button" aria-label="放大查看：小狗·一">
+          <img src="images/dog1.jpg" alt="趴在蓝色篮子里的小狗" loading="lazy">
+          <figcaption>小狗 · 一</figcaption>
+        </figure>
+        <figure class="gallery-item reveal" tabindex="0" role="button" aria-label="放大查看：小狗·二">
+          <img src="images/dog2.jpg" alt="趴在石板路上的小狗" loading="lazy">
+          <figcaption>小狗 · 二</figcaption>
+        </figure>
+        <figure class="gallery-item reveal" tabindex="0" role="button" aria-label="放大查看：熊猫·一">
+          <img src="images/panda1.jpg" alt="啃竹子的大熊猫" loading="lazy">
+          <figcaption>熊猫 · 一</figcaption>
+        </figure>
+        <figure class="gallery-item reveal" tabindex="0" role="button" aria-label="放大查看：熊猫·二">
+          <img src="images/panda2.jpg" alt="趴在石头上休息的大熊猫" loading="lazy">
+          <figcaption>熊猫 · 二</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ============ 9. 工具索引 ============ -->
+    <section class="sec wrap" id="tools">
+      <h2 class="sec-head reveal">
+        <span class="sec-num">06.</span>
+        <span class="sec-title">工具索引</span>
+        <span class="sec-line" aria-hidden="true"></span>
+      </h2>
+      <p class="sec-sub reveal">日常用得上的几个站点，点一下直接跳转。</p>
+
+      <div class="tool-grid">
+        <a class="tool-card reveal" href="https://www.tboxn.com/" target="_blank" rel="noopener noreferrer">
+          <span class="tool-name">Tbox</span>
+          <span class="tool-desc">只收录优质在线工具的导航站</span>
+          <span class="tool-arrow" aria-hidden="true">↗</span>
+        </a>
+
+        <a class="tool-card reveal" href="https://github.com/" target="_blank" rel="noopener noreferrer">
+          <span class="tool-name">GitHub</span>
+          <span class="tool-desc">代码托管与开源社区</span>
+          <span class="tool-arrow" aria-hidden="true">↗</span>
+        </a>
+
+        <a class="tool-card reveal" href="https://git-scm.com/" target="_blank" rel="noopener noreferrer">
+          <span class="tool-name">Git</span>
+          <span class="tool-desc">版本控制工具与官方文档</span>
+          <span class="tool-arrow" aria-hidden="true">↗</span>
+        </a>
+
+        <a class="tool-card reveal" href="https://bibigpt.co/" target="_blank" rel="noopener noreferrer">
+          <span class="tool-name">BibiGPT</span>
+          <span class="tool-desc">视频与播客的一键 AI 总结</span>
+          <span class="tool-arrow" aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ 8. 页脚 ============ -->
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <p class="footer-note">© 2026 CallIJL · 个人作品集 · 闲时落笔，记录心绪与见闻</p>
+      <p class="footer-links">
+        <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="#music">网易云</a>
+        <a href="#top">回到顶部</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- ============ 进入页面的欢迎弹窗 ============ -->
+  <div class="entry-mask" id="entryMask" role="dialog" aria-modal="true" aria-labelledby="entryHint">
+    <div class="entry-card">
+      <img class="entry-img" src="images/poster.jpg" alt="庆祝四川省绵阳中学拿下“奶龙中学.com”域名">
+      <p class="entry-hint" id="entryHint">点击任意处即可进入我的主页</p>
+    </div>
+  </div>
+
+  <!-- ============ 小说阅读弹窗（竖向滚动） ============ -->
+  <div class="novel-modal-mask" id="novelModal" role="dialog" aria-modal="true"
+       aria-labelledby="novelModalTitle" hidden>
+    <div class="novel-modal">
+      <div class="modal-header">
+        <h3 class="modal-title" id="novelModalTitle">阅读</h3>
+        <button class="close-btn" type="button" id="novelCloseBtn" aria-label="关闭阅读弹窗">&times;</button>
+      </div>
+      <div class="novel-read-content" id="novelContent" tabindex="0"></div>
+    </div>
+  </div>
+
+  <!-- ============ 相册放大查看 ============ -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="图片预览" hidden>
+    <button class="close-btn lightbox-close" type="button" id="lightboxCloseBtn" aria-label="关闭图片预览">&times;</button>
+    <img id="lightboxImg" src="" alt="">
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
