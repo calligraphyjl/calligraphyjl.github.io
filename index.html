@@ -237,7 +237,7 @@
         </div>
         <p class="project-desc">
           电脑随机生成 1-100 之间的数字，用户输入猜测数字，程序提示“大了”或者“小了”，
-          直到猜中，最后统计一共猜测多少次。单文件 Python 代码，可以使用命令行运行。
+          直到猜中，最后统计一共猜测多少次。单文件 Python 代码，可以使用命令行运行；下面这个网页版可以直接试玩。
         </p>
         <ul class="meta-list">
           <li>运行 · <code>python guess_number.py</code></li>
@@ -245,12 +245,61 @@
         </ul>
 
         <div class="code-tabs" role="tablist" aria-label="项目预览切换">
-          <button class="tab is-active" type="button" role="tab" aria-selected="true" data-tab="code">代码</button>
+          <button class="tab is-active" type="button" role="tab" aria-selected="true" data-tab="demo">试玩</button>
           <button class="tab" type="button" role="tab" aria-selected="false" data-tab="readme">README</button>
         </div>
 
-        <div class="tab-panel is-active" data-panel="code">
-          <pre class="code-box"><code>import random
+        <div class="tab-panel is-active" data-panel="demo">
+          <div class="game" id="guessGame">
+            <span class="confetti" id="gameConfetti" aria-hidden="true"></span>
+
+            <div class="game-head">
+              <span class="game-title">猜数字 · 1–100</span>
+              <span class="game-meta">
+                <span id="gameRange">范围 1–100</span>
+                <span class="sep">·</span>已猜 <b id="gameCount">0</b> 次
+                <span class="sep">·</span>最佳 <b id="gameBest">—</b>
+              </span>
+              <button class="game-reset" type="button" id="gameReset">重新开始</button>
+            </div>
+
+            <div class="game-log" id="gameLog" role="log" aria-live="polite" aria-label="游戏记录">
+              <p class="log-line log-sys">我想好了一个 1–100 之间的整数，来猜猜看吧。</p>
+            </div>
+
+            <form class="game-form" id="gameForm" autocomplete="off">
+              <label class="game-prompt" for="gameInput">&gt;</label>
+              <input class="game-input" id="gameInput" type="text" inputmode="numeric" maxlength="3"
+                     placeholder="输入 1–100 的整数" aria-label="输入你的猜测">
+              <button class="game-btn" type="submit">猜</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="tab-panel" data-panel="readme">
+          <div class="readme-box">
+            <p><strong># 猜数字小游戏（Guess the Number）</strong></p>
+            <p>一个用 Python 编写的命令行小游戏：程序随机生成 1-100 之间的整数，玩家反复输入猜测值，程序返回“大了 / 小了”，直到猜中并统计猜测次数。</p>
+            <p><strong>## 功能</strong></p>
+            <p>· 随机生成 1-100 的目标数字<br>· 输入非法时给出友好提示，不消耗猜测次数<br>· 每次猜测实时反馈“大了 / 小了”<br>· 猜中后统计总次数</p>
+            <p><strong>## 运行方式</strong></p>
+            <p>需要 Python 3.6 及以上版本，无需安装第三方依赖。</p>
+            <pre class="code-box code-box--inline"><code>python guess_number.py</code></pre>
+            <p><strong>## 示例</strong></p>
+            <pre class="code-box code-box--inline"><code>我已经想好了一个 1-100 之间的整数，来猜猜看吧！
+请输入你的猜测（1-100）：50
+小了
+请输入你的猜测（1-100）：75
+大了
+请输入你的猜测（1-100）：63
+猜中啦！答案就是 63，你一共猜了 3 次。</code></pre>
+            <p><strong>## 可拓展方向</strong></p>
+            <p>· 增加难度等级（改变数字范围）<br>· 限制最大猜测次数<br>· 记录历史最佳成绩</p>
+          </div>
+
+          <details class="code-details">
+            <summary>查看 Python 源代码</summary>
+            <pre class="code-box"><code>import random
 
 def main():
     """猜数字小游戏：随机数在 1-100 之间，直到猜中为止。"""
@@ -282,28 +331,7 @@ def main():
 
 if __name__ == "__main__":
     main()</code></pre>
-        </div>
-
-        <div class="tab-panel" data-panel="readme">
-          <div class="readme-box">
-            <p><strong># 猜数字小游戏（Guess the Number）</strong></p>
-            <p>一个用 Python 编写的命令行小游戏：程序随机生成 1-100 之间的整数，玩家反复输入猜测值，程序返回“大了 / 小了”，直到猜中并统计猜测次数。</p>
-            <p><strong>## 功能</strong></p>
-            <p>· 随机生成 1-100 的目标数字<br>· 输入非法时给出友好提示，不消耗猜测次数<br>· 每次猜测实时反馈“大了 / 小了”<br>· 猜中后统计总次数</p>
-            <p><strong>## 运行方式</strong></p>
-            <p>需要 Python 3.6 及以上版本，无需安装第三方依赖。</p>
-            <pre class="code-box code-box--inline"><code>python guess_number.py</code></pre>
-            <p><strong>## 示例</strong></p>
-            <pre class="code-box code-box--inline"><code>我已经想好了一个 1-100 之间的整数，来猜猜看吧！
-请输入你的猜测（1-100）：50
-小了
-请输入你的猜测（1-100）：75
-大了
-请输入你的猜测（1-100）：63
-猜中啦！答案就是 63，你一共猜了 3 次。</code></pre>
-            <p><strong>## 可拓展方向</strong></p>
-            <p>· 增加难度等级（改变数字范围）<br>· 限制最大猜测次数<br>· 记录历史最佳成绩</p>
-          </div>
+          </details>
         </div>
       </article>
     </section>

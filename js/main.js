@@ -153,7 +153,177 @@
   });
 
   /* ------------------------------------------------------------------
-     4.1 词作配图轮播（多图淡入淡出，鼠标悬停暂停）
+     4.1 猜数字小游戏（页面内可玩，带最佳成绩与猜中特效）
+     ------------------------------------------------------------------ */
+  var gameWrap = $('#guessGame');
+
+  if (gameWrap) {
+    var gameLog      = $('#gameLog', gameWrap);
+    var gameForm     = $('#gameForm', gameWrap);
+    var gameInput    = $('#gameInput', gameWrap);
+    var gameCount    = $('#gameCount', gameWrap);
+    var gameRange    = $('#gameRange', gameWrap);
+    var gameBestEl   = $('#gameBest', gameWrap);
+    var gameReset    = $('#gameReset', gameWrap);
+    var gameConfetti = $('#gameConfetti', gameWrap);
+
+    var BEST_KEY = 'shudi-guess-best';
+    var CONFETTI_COLORS = ['#64ffda', '#f5b9c8', '#e2a06a', '#7fb3d5', '#9fbe93', '#f0c674'];
+
+    var answer = 0;
+    var tries = 0;
+    var low = 1;
+    var high = 100;
+    var over = false;
+
+    // 尊重系统「减少动态效果」
+    var motionOK = !(window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+    // ---- 最佳成绩：存在 localStorage，隐私模式下降级为不记录 ----
+    function readBest() {
+      try {
+        var n = parseInt(window.localStorage.getItem(BEST_KEY), 10);
+        return isNaN(n) ? null : n;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function writeBest(n) {
+      try {
+        window.localStorage.setItem(BEST_KEY, String(n));
+      } catch (e) {
+        /* 忽略：隐身模式或存储被禁用 */
+      }
+    }
+
+    function renderBest() {
+      var best = readBest();
+      gameBestEl.textContent = best === null ? '—' : best + ' 次';
+      return best;
+    }
+
+    function appendLine(text, cls) {
+      var p = document.createElement('p');
+      p.className = 'log-line' + (cls ? ' ' + cls : '');
+      p.textContent = text;          // 用 textContent，不解析用户输入
+      gameLog.appendChild(p);
+      gameLog.scrollTop = gameLog.scrollHeight;
+    }
+
+    function updateHead() {
+      gameCount.textContent = tries;
+      gameRange.textContent = over ? '已结束' : '范围 ' + low + '–' + high;
+    }
+
+    // ---- 猜中特效：彩屑 + 卡片发光 ----
+    function celebrate() {
+      if (!motionOK) return;
+
+      gameWrap.classList.add('is-win');
+      window.setTimeout(function () { gameWrap.classList.remove('is-win'); }, 1000);
+
+      if (!gameConfetti) return;
+      gameConfetti.innerHTML = '';
+
+      for (var i = 0; i < 30; i++) {
+        var piece = document.createElement('span');
+        piece.className = 'confetti-piece';
+        piece.style.left = (6 + Math.random() * 88) + '%';
+        piece.style.background = CONFETTI_COLORS[i % CONFETTI_COLORS.length];
+        piece.style.width = (6 + Math.random() * 5).toFixed(0) + 'px';
+        piece.style.height = (10 + Math.random() * 7).toFixed(0) + 'px';
+        piece.style.animationDelay = (Math.random() * 0.3).toFixed(2) + 's';
+        piece.style.setProperty('--dx', (Math.random() * 150 - 75).toFixed(0) + 'px');
+        piece.style.setProperty('--rot', (Math.random() * 720 - 360).toFixed(0) + 'deg');
+        gameConfetti.appendChild(piece);
+      }
+
+      window.setTimeout(function () { gameConfetti.innerHTML = ''; }, 1900);
+    }
+
+    // focus 参数：初始化时不抢焦点，避免页面一加载就滚到项目区
+    function resetGame(focus) {
+      answer = Math.floor(Math.random() * 100) + 1;
+      tries = 0;
+      low = 1;
+      high = 100;
+      over = false;
+
+      gameLog.innerHTML = '';
+      appendLine('我想好了一个 1–100 之间的整数，来猜猜看吧。', 'log-sys');
+      gameInput.value = '';
+      gameInput.disabled = false;
+      gameWrap.classList.remove('is-win');
+      renderBest();
+      updateHead();
+      if (focus) gameInput.focus();
+    }
+
+    gameForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (over) return;
+
+      var raw = gameInput.value.trim();
+
+      if (!/^\d+$/.test(raw)) {
+        appendLine('请输入 1–100 之间的整数。', 'log-warn');
+        gameInput.select();
+        return;
+      }
+
+      var guess = parseInt(raw, 10);
+
+      if (guess < 1 || guess > 100) {
+        appendLine('范围是 1–100，请重新输入。', 'log-warn');
+        gameInput.select();
+        return;
+      }
+
+      tries += 1;
+
+      if (guess > answer) {
+        if (guess - 1 < high) high = guess - 1;
+        appendLine(guess + ' → 大了', 'log-hi');
+        updateHead();
+        gameInput.select();
+      } else if (guess < answer) {
+        if (guess + 1 > low) low = guess + 1;
+        appendLine(guess + ' → 小了', 'log-lo');
+        updateHead();
+        gameInput.select();
+      } else {
+        var prevBest = readBest();
+        var isRecord = prevBest === null || tries < prevBest;
+        if (isRecord) writeBest(tries);
+
+        appendLine('猜中啦！答案就是 ' + answer + '，你一共猜了 ' + tries + ' 次。', 'log-ok');
+
+        if (isRecord) {
+          appendLine(prevBest === null
+            ? '🏆 首次通关，已记录为最佳成绩。'
+            : '🏆 新纪录！比上次少猜 ' + (prevBest - tries) + ' 次。', 'log-record');
+        }
+
+        over = true;
+        gameInput.value = '';
+        gameInput.disabled = true;
+        renderBest();
+        updateHead();
+        celebrate();
+      }
+    });
+
+    gameReset.addEventListener('click', function () {
+      resetGame(true);
+    });
+
+    resetGame(false);
+  }
+
+  /* ------------------------------------------------------------------
+     4.2 词作配图轮播（多图淡入淡出，鼠标悬停暂停）
      ------------------------------------------------------------------ */
   var reduceMotion = window.matchMedia &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;

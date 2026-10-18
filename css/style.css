@@ -853,6 +853,183 @@ code {
   color: var(--ink-2);
 }
 
+/* ---------- 5.1 猜数字小游戏（网页内可试玩） ---------- */
+.game {
+  position: relative;
+  overflow: hidden;
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.game-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+  padding: 12px 16px;
+  font-family: var(--font-mono);
+  font-size: .76rem;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+}
+
+.game-title {
+  font-size: .82rem;
+  color: var(--ink);
+}
+
+.game-meta { margin-left: auto; }
+.game-meta b { color: var(--accent); font-weight: 600; }
+
+.game-reset {
+  flex: none;
+  padding: 3px 10px;
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color .2s ease, border-color .2s ease;
+}
+
+.game-reset:hover { color: var(--accent); border-color: var(--accent); }
+
+.game-log {
+  height: 220px;
+  padding: 14px 16px;
+  overflow-y: auto;
+  font-family: var(--font-mono);
+  font-size: .84rem;
+  line-height: 1.9;
+  color: var(--ink-2);
+  scrollbar-width: thin;
+}
+
+.game-log::-webkit-scrollbar { width: 6px; }
+.game-log::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+
+.log-line { margin: 0 0 .25em; }
+.log-sys { color: var(--muted); }
+.log-hi { color: #e2a06a; }        /* 大了 */
+.log-lo { color: #7fb3d5; }        /* 小了 */
+.log-warn { color: #d98b8b; }      /* 非法输入 */
+.log-ok { color: var(--accent); font-weight: 600; animation: log-pop .5s var(--ease); }
+.log-record { color: #f0c674; font-weight: 600; }
+
+.game-meta .sep { margin: 0 2px; opacity: .5; }
+
+/* 猜中时：卡片描边发光 */
+.game.is-win {
+  border-color: var(--accent);
+  animation: game-win .9s ease;
+}
+
+@keyframes game-win {
+  0%   { box-shadow: 0 0 0 0 var(--accent-soft); }
+  45%  { box-shadow: 0 0 0 7px var(--accent-soft); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); }
+}
+
+@keyframes log-pop {
+  0%   { transform: scale(.96); opacity: .3; }
+  60%  { transform: scale(1.03); opacity: 1; }
+  100% { transform: none; }
+}
+
+/* 彩屑：JS 动态插入，结束后自动移除 */
+.confetti {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.confetti-piece {
+  position: absolute;
+  top: 28%;
+  width: 9px;
+  height: 14px;
+  border-radius: 2px;
+  opacity: 0;
+  animation: confetti-fall 1.25s cubic-bezier(.2, .6, .4, 1) forwards;
+}
+
+@keyframes confetti-fall {
+  0%   { opacity: 1; transform: translate3d(0, 0, 0) rotate(0deg); }
+  100% { opacity: 0; transform: translate3d(var(--dx), 200px, 0) rotate(var(--rot)); }
+}
+
+.game-form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+}
+
+.game-prompt {
+  font-family: var(--font-mono);
+  font-size: .9rem;
+  color: var(--accent);
+}
+
+.game-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 38px;
+  padding: 8px 12px;
+  font-family: var(--font-mono);
+  font-size: .85rem;
+  line-height: 1.5;
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+}
+
+.game-input::placeholder { color: var(--muted); }
+
+.game-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.game-input:disabled { opacity: .55; }
+
+.game-btn {
+  flex: none;
+  padding: 8px 18px;
+  font-family: var(--font-mono);
+  font-size: .82rem;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background .2s ease, color .2s ease;
+}
+
+.game-btn:hover { background: var(--accent); color: var(--bg); }
+
+/* README 里的源代码折叠区 */
+.code-details { margin-top: 18px; }
+
+.code-details summary {
+  padding: 6px 0;
+  font-family: var(--font-mono);
+  font-size: .78rem;
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.code-details[open] summary { margin-bottom: 10px; }
+.code-details .code-box { background: var(--card); }
+
 /* ---------- 6. 文集 ---------- */
 .poem-grid,
 .novel-grid {
@@ -1427,6 +1604,14 @@ html:not(.js) .entry-mask { display: none; }
 
   .code-box { font-size: .76rem; padding: 14px 16px; }
   .readme-box { padding: 16px; font-size: .84rem; }
+
+  /* 游戏：窄屏压缩日志高度 */
+  .game-head { gap: 6px 10px; padding: 10px 12px; }
+  .game-meta { margin-left: 0; }
+  .game-reset { margin-left: auto; }
+  .game-log { height: 190px; padding: 12px; font-size: .8rem; }
+  .game-form { padding: 10px 12px; gap: 6px; }
+  .game-btn { padding: 8px 14px; }
 
   .site-footer { margin-top: 54px; }
   .footer-inner { flex-direction: column; align-items: flex-start; gap: 8px; }
